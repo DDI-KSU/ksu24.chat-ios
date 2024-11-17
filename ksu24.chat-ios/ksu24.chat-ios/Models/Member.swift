@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Sender: Codable, Identifiable, Hashable {
+
+struct Member: Codable, Identifiable, Hashable {
     var id:             UUID
     var fullName:       String
     var shortName:      String

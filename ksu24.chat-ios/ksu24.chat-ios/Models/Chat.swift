@@ -21,7 +21,7 @@ struct Chat: Codable, Identifiable, Hashable {
 
 struct LastMessage: Codable, Identifiable, Hashable {
     var id:             UUID
-    var sender:         Sender?
+    var sender:         Member?
     var content:        String
     var created:        String
     var attachments:    [String] = []

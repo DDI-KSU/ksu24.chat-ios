@@ -9,7 +9,7 @@ import Foundation
 
 struct Message: Codable, Identifiable {
     var id:             UUID
-    var sender:         Sender
+    var sender:         Member
     var replyTo:        Reply?
     var content:        String
     var created:        String
@@ -19,14 +19,14 @@ struct Message: Codable, Identifiable {
 
 struct Reply: Codable, Identifiable {
     var id:             UUID
-    var sender:         Sender
+    var sender:         Member
     var content:        String
     var created:        String
     var attachments:    [File] = []
 }
 
 struct Reaction: Codable {
-    var person:     Sender
+    var person:     Member
     var reaction:   String
     var created:    String
 }
