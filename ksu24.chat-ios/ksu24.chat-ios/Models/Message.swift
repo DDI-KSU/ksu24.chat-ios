@@ -26,7 +26,7 @@ struct Reply: Codable, Identifiable {
 }
 
 struct Reaction: Codable {
-    var sender:     Sender
+    var person:     Sender
     var reaction:   String
     var created:    String
 }
