@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 struct Chat: Codable, Identifiable, Hashable {
     var id:                         UUID
     var name:                       String
@@ -24,5 +25,5 @@ struct LastMessage: Codable, Identifiable, Hashable {
     var sender:         Member?
     var content:        String
     var created:        String
-    var attachments:    [String] = []
+    var attachments:    [String]
 }
