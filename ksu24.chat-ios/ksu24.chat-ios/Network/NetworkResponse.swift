@@ -8,6 +8,6 @@
 import Foundation
 
 struct NetworkResponse<Wrapped: Codable>: Codable {
-    var count:  Int
-    var result: Wrapped
+    var count:      Int
+    var results:    [Wrapped]
 }
