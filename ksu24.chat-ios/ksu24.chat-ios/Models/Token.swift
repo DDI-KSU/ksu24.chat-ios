@@ -12,8 +12,4 @@ struct Token: Codable {
     var refresh:    String
 }
 
-extension Token: CustomStringConvertible {
-    var description: String {
-            "{ access: \(access), refresh: \(refresh) }"
-    }
-}
+

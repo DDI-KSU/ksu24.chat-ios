@@ -9,11 +9,11 @@ import SwiftUI
 
 struct RootView: View {
     @ObservedObject var authManager = AuthManager()
-//    @ObservedObject var chatManager = ChatManager()
+    @ObservedObject var chatManager = ChatManager()
         
     var body: some View {
         if authManager.isLoggedIn {
-           
+           HomePage(chatManager: chatManager, authManager: authManager)
         } else {
             AuthPage(authManager: authManager)
         }

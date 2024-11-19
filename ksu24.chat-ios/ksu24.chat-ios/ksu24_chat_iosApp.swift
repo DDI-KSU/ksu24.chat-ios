@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct ksu24_chat_iosApp: App {
+    @StateObject var authManager: AuthManager = .init()
+    @StateObject var chatManager: ChatManager = .init()
+    
     var body: some Scene {
         WindowGroup {
-            AuthPage(authManager: AuthManager())
+            RootView(authManager: authManager,chatManager: chatManager)
         }
     }
 }
