@@ -13,7 +13,11 @@ struct Endpoint {
 }
 
 extension Endpoint {
-    func makeRequest(withMethod method: String) -> URLRequest? {
+    func makeRequest<RequestBody: Codable> (
+        withMethod method:  String,
+        withBody   body:    RequestBody = ""
+    ) -> URLRequest? {
+        
         var components = URLComponents()
         
         components.scheme       =   "https"
@@ -27,7 +31,20 @@ extension Endpoint {
         
         var request = URLRequest(url: url)
         
-        request.httpMethod = method
+        request.httpMethod  = method
+        
+        
+        if body as! String == "" {
+            do {
+                request.httpBody = try JSONEncoder().encode(body)
+    
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.addValue("application/json", forHTTPHeaderField: "Accept")
+            } catch {
+                print("Failed to encode request body: \(error)")
+                return nil
+            }
+        }
         
         return request
     }
@@ -35,11 +52,11 @@ extension Endpoint {
 
 extension Endpoint {
     static var login: Self {
-        Endpoint(path: "api/v2/login")
+        Endpoint(path: "api/v2/login/")
     }
     
     static var logout: Self {
-        Endpoint(path: "api/v2/logout")
+        Endpoint(path: "api/v2/logout/")
     }
     
     static var conversations: Self {

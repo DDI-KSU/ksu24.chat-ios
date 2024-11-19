@@ -8,29 +8,48 @@
 import Foundation
 import Combine
 
-struct NetworkResponseLoader<Model: Identifiable & Codable> {
+struct NetworkResponseLoader<Model: Codable> {
     var urlSession = URLSession.shared
     
-    func loadCollactable(
+    func loadCollactable<RequestBody: Codable>(
         endpoint:   Endpoint,
-        method:     String
+        method:     String,
+        body:       RequestBody = ""
     ) -> AnyPublisher<[Model], Error> {
         
-        urlSession.collactablePublisher(for: endpoint.makeRequest(withMethod: method))
+        urlSession.collactablePublisher(for: endpoint.makeRequest(
+            withMethod: method,
+            withBody: body
+        ))
     }
     
-    func loadVoid(
+    func loadSingle<RequestBody: Codable>(
         endpoint:   Endpoint,
-        method:     String
+        method:     String,
+        body:       RequestBody = ""
+    ) -> AnyPublisher<Model, Error> {
+        
+        urlSession.singlePublisher(for: endpoint.makeRequest(
+            withMethod: method,
+            withBody: body
+        ))
+    }
+        
+    func loadVoid<RequestBody: Codable>(
+        endpoint:   Endpoint,
+        method:     String,
+        body:       RequestBody = ""
     ) -> AnyPublisher<Void, Error> {
         
-        urlSession.voidPublisher(for: endpoint.makeRequest(withMethod: method))
+        urlSession.voidPublisher(for: endpoint.makeRequest(
+            withMethod: method,
+            withBody: body
+        ))
     }
 }
 
 extension URLSession {
     
-    // For Network Response
     func collactablePublisher<T: Codable>(
         for     request: URLRequest?,
         decoder:         JSONDecoder = .init()
@@ -47,6 +66,24 @@ extension URLSession {
                 .decode(type: NetworkResponse<T>.self, decoder: decoder)
                 .map(\.results)
                 .eraseToAnyPublisher()
+    }
+    
+    func singlePublisher<T: Codable>(
+        for     request: URLRequest?,
+        decoder:         JSONDecoder = .init()
+    ) -> AnyPublisher<T, Error> {
+        
+        
+        guard let request = request else {
+            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+        }
+        
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        return dataTaskPublisher(for: request)
+                    .map(\.data)
+                    .decode(type: T.self, decoder: decoder)
+                    .eraseToAnyPublisher()
     }
     
     func voidPublisher(
