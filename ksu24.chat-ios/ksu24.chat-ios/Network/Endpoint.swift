@@ -66,6 +66,10 @@ extension Endpoint {
         Endpoint(path: "api/v2/my/chat/conversations")
     }
     
+    static var profile: Self {
+        Endpoint(path: "api/v2/my/profile/")
+    }
+    
     static func messages(withID id: Chat.ID) -> Self {
         Endpoint(path: "api/v2/my/chat/conversations/\(id)/messages")
     }
