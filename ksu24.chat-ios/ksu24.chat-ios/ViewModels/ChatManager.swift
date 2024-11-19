@@ -11,7 +11,7 @@ import Combine
 class ChatManager: ObservableObject {
     @Published public var chats: [Chat] = []
     
-    private var NRL:            NetworkResponseLoader<Chat>
+    private var NRL:            NetworkResponseLoader
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -19,7 +19,7 @@ class ChatManager: ObservableObject {
     }
     
     public func loadChats() {
-        NRL.loadCollactable(endpoint: .conversations, method: "GET")
+        NRL.loadCollactable(modelType: Chat.self, endpoint: .conversations, method: "GET")
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
@@ -32,4 +32,6 @@ class ChatManager: ObservableObject {
                 })
                 .store(in: &cancellables)
     }
+    
+    
 }

@@ -11,7 +11,7 @@ import Combine
 class AuthManager: ObservableObject {
     @Published var isLoggedIn: Bool = false
     
-    private var NRL:            NetworkResponseLoader<User>
+    private var NRL:            NetworkResponseLoader
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -19,7 +19,7 @@ class AuthManager: ObservableObject {
     }
     
     public func login(creditinals: Credentials) {
-        NRL.loadSingle(endpoint: .login, method: "POST", body: creditinals)
+        NRL.loadSingle(modelType: User.self, endpoint: .login, method: "POST", body: creditinals)
             
             .receive(on: DispatchQueue.main)
             .sink(

@@ -8,10 +8,11 @@
 import Foundation
 import Combine
 
-struct NetworkResponseLoader<Model: Codable> {
+struct NetworkResponseLoader {
     var urlSession = URLSession.shared
     
-    func loadCollactable<RequestBody: Codable>(
+    func loadCollactable<Model: Codable, RequestBody: Codable>(
+        modelType: Model.Type,
         endpoint:   Endpoint,
         method:     String,
         body:       RequestBody? = ""
@@ -23,7 +24,8 @@ struct NetworkResponseLoader<Model: Codable> {
         ))
     }
     
-    func loadSingle<RequestBody: Codable>(
+    func loadSingle<Model: Codable, RequestBody: Codable>(
+        modelType: Model.Type,
         endpoint:   Endpoint,
         method:     String,
         body:       RequestBody? = ""
