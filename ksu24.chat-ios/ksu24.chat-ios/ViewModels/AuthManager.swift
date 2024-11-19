@@ -18,9 +18,7 @@ class AuthManager: ObservableObject {
         self.NRL = .init()
     }
     
-    public func login(creditinals: Credentials) -> User {
-        var user: User = .init(access: .init(), refresh: .init())
-        
+    public func login(creditinals: Credentials) {
         NRL.loadSingle(endpoint: .login, method: "POST", body: creditinals)
             .sink(
                 receiveCompletion: { completion in
@@ -29,10 +27,22 @@ class AuthManager: ObservableObject {
                     }
                 },
                 receiveValue: { result in
-                    user = result
+                    print(result)
                 })
                 .store(in: &cancellables)
-        
-        return user
+    }
+    
+    public func logout() {
+        NRL.loadVoid(endpoint: .logout, method: "POST")
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Logout failed: \(error)")
+                    }
+                },
+                receiveValue: { result in
+                    print(result)
+                })
+                .store(in: &cancellables)
     }
 }
