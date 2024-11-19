@@ -11,7 +11,7 @@ import SwiftUI
 struct ksu24_chat_iosApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AuthPage(authManager: AuthManager())
         }
     }
 }

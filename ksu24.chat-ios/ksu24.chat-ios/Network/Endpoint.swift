@@ -33,7 +33,6 @@ extension Endpoint {
         
         request.httpMethod  = method
         
-        
         if let body = body {
             if let bodyString = body as? String, bodyString.isEmpty {
                 
@@ -48,7 +47,6 @@ extension Endpoint {
                     return nil
                 }
             }
-            
         }
         
         return request

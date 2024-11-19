@@ -7,7 +7,13 @@
 
 import Foundation
 
-struct User: Codable {
+struct Token: Codable {
     var access:     String
     var refresh:    String
+}
+
+extension Token: CustomStringConvertible {
+    var description: String {
+            "{ access: \(access), refresh: \(refresh) }"
+    }
 }

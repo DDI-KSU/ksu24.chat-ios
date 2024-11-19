@@ -19,8 +19,7 @@ class AuthManager: ObservableObject {
     }
     
     public func login(creditinals: Credentials) {
-        NRL.loadSingle(modelType: User.self, endpoint: .login, method: "POST", body: creditinals)
-            
+        NRL.loadSingle(modelType: Token.self, endpoint: .login, method: "POST", body: creditinals)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
