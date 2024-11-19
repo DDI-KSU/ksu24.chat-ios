@@ -9,11 +9,12 @@ import SwiftUI
 
 struct MessageList: View {
     public var messages: [Message]
+    public var currentUserID: UUID
     
     var body: some View {
         ScrollView {
                 ForEach(messages) { message in
-                    MessageRow(message: message)
+                    MessageRow(message: message, currentUserID: currentUserID)
                 }
             }
             Spacer()

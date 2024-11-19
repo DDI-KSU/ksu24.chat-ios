@@ -64,10 +64,30 @@ extension URLSession {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         
         return dataTaskPublisher(for: request)
-                .map(\.data)
-                .decode(type: NetworkResponse<T>.self, decoder: decoder)
-                .map(\.results)
-                .eraseToAnyPublisher()
+            .tryMap { data, response in
+                if let httpResponse = response as? HTTPURLResponse {
+//                    print("HTTP Status Code: \(httpResponse.statusCode)")
+                }
+
+                // Print the raw response data as a string
+                if let responseString = String(data: data, encoding: .utf8) {
+//                    print("Raw Response: \(responseString)")
+                }
+
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...500).contains(httpResponse.statusCode) else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                do {
+                   let decodedData = try decoder.decode(NetworkResponse<T>.self, from: data)
+                    return decodedData.results
+               } catch {
+                   print("Decoding error: \(error)")
+                   throw error
+               }
+            }
+            .eraseToAnyPublisher()
     }
     
     func singlePublisher<T: Codable>(
@@ -83,9 +103,32 @@ extension URLSession {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         
         return dataTaskPublisher(for: request)
-                    .map(\.data)
-                    .decode(type: T.self, decoder: decoder)
-                    .eraseToAnyPublisher()
+            .tryMap { data, response in
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("HTTP Status Code: \(httpResponse.statusCode)")
+                }
+
+                // Print the raw response data as a string
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Raw Response: \(responseString)")
+                }
+
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...500).contains(httpResponse.statusCode) else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                do {
+                   let decodedData = try decoder.decode(T.self, from: data)
+                    print(decodedData)
+                    
+                   return decodedData
+               } catch {
+                   print("Decoding error: \(error)")
+                   throw error
+               }
+            }
+            .eraseToAnyPublisher()
     }
     
     func voidPublisher(

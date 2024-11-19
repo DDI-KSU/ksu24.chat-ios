@@ -13,3 +13,9 @@ public struct Profile: Codable {
     public var surname: String
     public var image:   String?
 }
+
+extension Profile: CustomStringConvertible {
+    public var description: String {
+        "Profile(id: \(id), name: \(name), surname: \(surname))"
+    }
+}

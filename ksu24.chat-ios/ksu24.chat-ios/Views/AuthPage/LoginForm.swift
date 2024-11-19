@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginForm: View {
-    @ObservedObject var authManager: AuthManager
+    @EnvironmentObject var authManager:    AuthManager
     
     @State public var username: String = "000863"
     @State public var password: String = "EN3QpQq2KT"
@@ -38,6 +38,7 @@ struct LoginForm: View {
             authManager.login(
                 creditinals: .init(username: username, password: password)
             )
+        
             
             authManager.isLoggedIn = true
         }) {

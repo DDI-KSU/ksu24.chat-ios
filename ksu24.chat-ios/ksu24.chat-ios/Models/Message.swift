@@ -37,3 +37,10 @@ struct File: Codable {
     var fileSize:           Int
 }
 
+extension Message {
+    func isFromCurrentUser(currentUserID id: UUID) -> Bool {
+        print(id)
+        
+        return id == sender.id
+    }
+}

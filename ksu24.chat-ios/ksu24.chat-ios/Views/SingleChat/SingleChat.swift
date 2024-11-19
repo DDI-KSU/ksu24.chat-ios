@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct SingleChat: View {
-    @ObservedObject public var chatManager: ChatManager
+    @EnvironmentObject public var chatManager: ChatManager
     
     @State public var chat: Chat
+    @State public var currentUserID: UUID
     
     
     var body: some View {
         VStack {
             ChatHeader(chat: chat)
-            MessageList(messages: chatManager.messages)
+            MessageList(messages: chatManager.messages, currentUserID: currentUserID)
         }
         .onAppear {
             chatManager.loadMessages(withID: chat.id)
