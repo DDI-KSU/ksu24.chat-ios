@@ -15,7 +15,7 @@ struct Endpoint {
 extension Endpoint {
     func makeRequest<RequestBody: Codable> (
         withMethod method:  String,
-        withBody   body:    RequestBody = ""
+        withBody   body:    RequestBody? = ""
     ) -> URLRequest? {
         
         var components = URLComponents()
@@ -34,16 +34,21 @@ extension Endpoint {
         request.httpMethod  = method
         
         
-        if body as! String == "" {
-            do {
-                request.httpBody = try JSONEncoder().encode(body)
-    
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.addValue("application/json", forHTTPHeaderField: "Accept")
-            } catch {
-                print("Failed to encode request body: \(error)")
-                return nil
+        if let body = body {
+            if let bodyString = body as? String, bodyString.isEmpty {
+                
+            } else {
+                do {
+                    request.httpBody = try JSONEncoder().encode(body)
+        
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    request.addValue("application/json", forHTTPHeaderField: "Accept")
+                } catch {
+                    print("Failed to encode request body: \(error)")
+                    return nil
+                }
             }
+            
         }
         
         return request

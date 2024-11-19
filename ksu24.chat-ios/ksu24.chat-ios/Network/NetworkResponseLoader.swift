@@ -14,7 +14,7 @@ struct NetworkResponseLoader<Model: Codable> {
     func loadCollactable<RequestBody: Codable>(
         endpoint:   Endpoint,
         method:     String,
-        body:       RequestBody = ""
+        body:       RequestBody? = ""
     ) -> AnyPublisher<[Model], Error> {
         
         urlSession.collactablePublisher(for: endpoint.makeRequest(
@@ -26,7 +26,7 @@ struct NetworkResponseLoader<Model: Codable> {
     func loadSingle<RequestBody: Codable>(
         endpoint:   Endpoint,
         method:     String,
-        body:       RequestBody = ""
+        body:       RequestBody? = ""
     ) -> AnyPublisher<Model, Error> {
         
         urlSession.singlePublisher(for: endpoint.makeRequest(
@@ -38,7 +38,7 @@ struct NetworkResponseLoader<Model: Codable> {
     func loadVoid<RequestBody: Codable>(
         endpoint:   Endpoint,
         method:     String,
-        body:       RequestBody = ""
+        body:       RequestBody? = ""
     ) -> AnyPublisher<Void, Error> {
         
         urlSession.voidPublisher(for: endpoint.makeRequest(
@@ -96,6 +96,15 @@ extension URLSession {
         
         return dataTaskPublisher(for: request)
             .tryMap { data, response in
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("HTTP Status Code: \(httpResponse.statusCode)")
+                }
+
+                // Print the raw response data as a string
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Raw Response: \(responseString)")
+                }
+
                 guard let httpResponse = response as? HTTPURLResponse,
                       (200...500).contains(httpResponse.statusCode) else {
                     throw URLError(.badServerResponse)
