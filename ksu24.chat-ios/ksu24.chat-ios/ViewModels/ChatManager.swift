@@ -17,4 +17,19 @@ class ChatManager: ObservableObject {
     init() {
         self.NRL = .init()
     }
+    
+    public func loadChats() {
+        NRL.loadCollactable(endpoint: .conversations, method: "GET")
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Login failed: \(error)")
+                    }
+                },
+                receiveValue: { result in
+                    self.chats = result
+                })
+                .store(in: &cancellables)
+    }
 }

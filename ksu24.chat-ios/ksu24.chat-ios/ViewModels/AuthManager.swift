@@ -20,6 +20,8 @@ class AuthManager: ObservableObject {
     
     public func login(creditinals: Credentials) {
         NRL.loadSingle(endpoint: .login, method: "POST", body: creditinals)
+            
+            .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
@@ -34,6 +36,7 @@ class AuthManager: ObservableObject {
     
     public func logout() {
         NRL.loadVoid(endpoint: .logout, method: "POST")
+            .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
