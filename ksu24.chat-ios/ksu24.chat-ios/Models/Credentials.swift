@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Creditinals{
+struct Credentials: Codable{
     var username: String
     var password: String
 }
