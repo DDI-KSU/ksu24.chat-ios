@@ -9,16 +9,21 @@ import SwiftUI
 import Combine
 
 class AsyncImageBinder: ObservableObject {
-    private var cancellables: AnyCancellable?
+    private var cancellable: AnyCancellable?
     
     @Published private(set) var image: UIImage?
     
     func load(url: URL) {
-        
+        cancellable = URLSession.shared
+            .dataTaskPublisher(for: url)
+            .map {UIImage(data: $0.data)}
+            .replaceError(with: nil)
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.image, on: self)
     }
     
     func cancel() {
-        
+        cancellable?.cancel()
     }
 }
 
