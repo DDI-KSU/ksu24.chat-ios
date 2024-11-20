@@ -14,13 +14,15 @@ struct SingleChat: View {
     @State public var currentUserID: UUID
     
     
+    
     var body: some View {
         VStack {
-            ChatHeader(chat: chat, members: chatManager.members)
+            ChatHeader(chat: chat, chatManager: chatManager)
             MessageList(messages: chatManager.messages, currentUserID: currentUserID)
         }
         .onAppear {
             chatManager.loadMessages(withID: chat.id)
+            chatManager.loadMembers(withID: chat.id)
         }
     }
 }

@@ -66,7 +66,11 @@ class ChatManager: ObservableObject {
                 .store(in: &cancellables)
     }
     
-//    public func getChatPartner(currentUserID: UUID) -> Member {
-//        
-//    }
+    public func getChatPartnerID(currentUserID: UUID) -> Member {
+        var partner: Member = members.first(where: { $0.id != currentUserID }) ?? Member(id: UUID(), fullName: "", shortName: "", lastActivity: "")
+        
+        print(partner.fullName)
+        
+        return partner
+    }
 }

@@ -9,13 +9,11 @@ import SwiftUI
 
 struct ChatHeader: View {
     public var chat:    Chat
-    public var members: [Member]
+//    public var members: [Member]
+    
+    public var chatManager: ChatManager
     
     @Environment(\.profileID) var currentUserID
-    
-    private var chatPartner: Member? {
-        members.first(where: { $0.id != currentUserID })
-    }
     
     private var chatType: ChatType {
         if chat.isPrivate {
@@ -30,8 +28,9 @@ struct ChatHeader: View {
     var body: some View {
         HStack {
             if chatType == .PRIVATE {
+                let member = chatManager.getChatPartnerID(currentUserID: currentUserID!)
                 
-                if let stringUrl = chatPartner?.image {
+                if let stringUrl =  member.image {
                     if let url = URL(string: stringUrl) {
                         AsyncWebImage(url: url, placeholder: PlaceHolder())
                     }
@@ -39,6 +38,7 @@ struct ChatHeader: View {
                     PlaceHolder()
                         .frame(width: 60, height: 60)
                 }
+         
                 
                 
                 VStack(alignment: .leading) {
@@ -49,9 +49,9 @@ struct ChatHeader: View {
                     Text(chat.lastMessage?.sender?.lastActivity ?? "Online")
                         .font(.subheadline)
                         .foregroundStyle(Color(.systemGray))
-                    
-                    Spacer()
                 }
+                
+                Spacer()
             } else {
                 if let stringUrl = chat.image {
                     if let url = URL(string: stringUrl) {
@@ -59,6 +59,7 @@ struct ChatHeader: View {
                     }
                 } else {
                     PlaceHolder()
+                        .scaledToFill()
                         .frame(width: 60, height: 60)
                 }
                 
@@ -71,11 +72,7 @@ struct ChatHeader: View {
                 
                 Spacer()
             }
-            
-            
-            
-           
-            
+
         }
         .frame(minWidth: 72)
         .padding(.horizontal, 12)
