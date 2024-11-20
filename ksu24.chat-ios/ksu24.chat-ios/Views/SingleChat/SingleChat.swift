@@ -16,7 +16,7 @@ struct SingleChat: View {
     
     var body: some View {
         VStack {
-            ChatHeader(chat: chat)
+            ChatHeader(chat: chat, members: chatManager.members)
             MessageList(messages: chatManager.messages, currentUserID: currentUserID)
         }
         .onAppear {

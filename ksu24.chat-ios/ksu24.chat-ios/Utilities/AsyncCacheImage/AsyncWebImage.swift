@@ -11,9 +11,9 @@ struct AsyncWebImage: View {
     @ObservedObject var binder = AsyncImageBinder()
     
     private var url:            URL
-    private var placeholder:    Image
+    private var placeholder:    PlaceHolder
     
-    init(url: URL, placeholder: Image) {
+    init(url: URL, placeholder: PlaceHolder) {
         self.url            = url
         self.placeholder    = placeholder
         
@@ -26,6 +26,7 @@ struct AsyncWebImage: View {
                 Image(uiImage: image)
                     .renderingMode(.original)
                     .resizable()
+                    .frame(width: 60, height: 60)
             } else {
                 placeholder
             }

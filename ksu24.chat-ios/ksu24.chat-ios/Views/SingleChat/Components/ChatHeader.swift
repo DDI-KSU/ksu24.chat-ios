@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct ChatHeader: View {
-    public var chat: Chat
+    public var chat:    Chat
+    public var members: [Member]
+    
+    @Environment(\.profileID) var currentUserID
+    
+    private var chatPartner: Member? {
+        members.first(where: { $0.id != currentUserID })
+    }
     
     private var chatType: ChatType {
         if chat.isPrivate {
@@ -23,11 +30,15 @@ struct ChatHeader: View {
     var body: some View {
         HStack {
             if chatType == .PRIVATE {
-                Image(systemName: "person.crop.circle.fill")
-                        .resizable()
-                        .scaledToFill()
+                
+                if let stringUrl = chatPartner?.image {
+                    if let url = URL(string: stringUrl) {
+                        AsyncWebImage(url: url, placeholder: PlaceHolder())
+                    }
+                } else {
+                    PlaceHolder()
                         .frame(width: 60, height: 60)
-                        .foregroundStyle(Color(.systemGray2))
+                }
                 
                 
                 VStack(alignment: .leading) {
@@ -38,26 +49,19 @@ struct ChatHeader: View {
                     Text(chat.lastMessage?.sender?.lastActivity ?? "Online")
                         .font(.subheadline)
                         .foregroundStyle(Color(.systemGray))
+                    
+                    Spacer()
                 }
-                
-                Spacer()
             } else {
                 if let stringUrl = chat.image {
-                    AsyncImage(url: URL(string: stringUrl)) { image in
-                        image.image?
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 60, height: 60)
+                    if let url = URL(string: stringUrl) {
+                        AsyncWebImage(url: url, placeholder: PlaceHolder())
                     }
-                    
-                   
                 } else {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .scaledToFill()
+                    PlaceHolder()
                         .frame(width: 60, height: 60)
-                        .foregroundStyle(Color(.systemGray2))
                 }
+                
                 
                 VStack(alignment: .leading) {
                     Text(chat.name)
@@ -66,13 +70,21 @@ struct ChatHeader: View {
                 }
                 
                 Spacer()
-            
             }
+            
+            
+            
+           
+            
         }
         .frame(minWidth: 72)
         .padding(.horizontal, 12)
     }
 }
+        
+   
+
+
 
 //#Preview {
 //    ChatHeader()

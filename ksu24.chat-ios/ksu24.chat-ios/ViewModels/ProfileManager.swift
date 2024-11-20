@@ -32,4 +32,8 @@ class ProfileManager: ObservableObject {
                 })
                 .store(in: &cancellables)
     }
+    
+    public func isFromCurrentUser(withID id: UUID) -> Bool {
+        id == profile.id
+    }
 }

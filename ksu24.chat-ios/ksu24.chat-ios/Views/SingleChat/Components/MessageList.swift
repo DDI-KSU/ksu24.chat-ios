@@ -13,7 +13,7 @@ struct MessageList: View {
     
     var body: some View {
         ScrollView {
-                ForEach(messages) { message in
+            ForEach(messages.reversed()) { message in
                     MessageRow(message: message, currentUserID: currentUserID)
                 }
             }
