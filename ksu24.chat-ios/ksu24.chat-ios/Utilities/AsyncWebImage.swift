@@ -8,19 +8,32 @@
 import SwiftUI
 
 struct AsyncWebImage: View {
+    @ObservedObject var binder = AsyncImageBinder()
+    
     private var url:            URL
     private var placeholder:    Image
     
     init(url: URL, placeholder: Image) {
         self.url            = url
         self.placeholder    = placeholder
+        
+        self.binder.load(url: self.url)
     }
     
     var body: some View {
-        placeholder
-            .resizable()
-            .onAppear {}
-            .onDisappear {}
+        VStack {
+            if let image = binder.image {
+                Image(uiImage: image)
+                    .renderingMode(.original)
+                    .resizable()
+            } else {
+                placeholder
+            }
+        }
+        .onAppear {}
+        .onDisappear {
+            self.binder.cancel()
+        }
     }
 }
 
