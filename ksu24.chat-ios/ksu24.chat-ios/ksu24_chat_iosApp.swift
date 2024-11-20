@@ -15,10 +15,7 @@ struct ksu24_chat_iosApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environmentObject(profileManager)
-                .environmentObject(chatManager)
-                .environmentObject(authManager)
-            }
+            RootView(authManager: authManager,chatManager: chatManager, profileManager: profileManager)
+        }
     }
 }

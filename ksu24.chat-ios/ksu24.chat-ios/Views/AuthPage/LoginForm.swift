@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginForm: View {
-    @EnvironmentObject var authManager:    AuthManager
+    @ObservedObject var authManager:    AuthManager
     
     @State public var username: String = "000863"
     @State public var password: String = "EN3QpQq2KT"

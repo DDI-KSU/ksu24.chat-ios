@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct AuthPage: View {
-    @EnvironmentObject var authManager: AuthManager
+    @ObservedObject var authManager: AuthManager
     
     var body: some View {
         NavigationStack {
-            LoginForm(authManager: _authManager)
+            LoginForm(authManager: authManager)
         }
     }
 }
 
-//#Preview {
-//    AuthPage(authManager: AuthManager())
-//}
+#Preview {
+    AuthPage(authManager: AuthManager())
+}

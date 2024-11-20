@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct RootView: View {
-    @EnvironmentObject var authManager: AuthManager
-    @EnvironmentObject var chatManager: ChatManager
-    @EnvironmentObject var profileManager: ProfileManager
+    @ObservedObject var authManager: AuthManager
+    @ObservedObject var chatManager: ChatManager
+    @ObservedObject var profileManager: ProfileManager
     
         
     var body: some View {
         Group {
             if authManager.isLoggedIn {
-               HomePage()
+               HomePage(chatManager: chatManager, profileManager: profileManager)
             } else {
-                AuthPage()
+                AuthPage(authManager: authManager)
             }
         }
         .onChange(of: authManager.isLoggedIn) {
@@ -28,6 +28,6 @@ struct RootView: View {
     }
 }
 
-#Preview {
-    RootView()
-}
+//#Preview {
+//    RootView()
+//}

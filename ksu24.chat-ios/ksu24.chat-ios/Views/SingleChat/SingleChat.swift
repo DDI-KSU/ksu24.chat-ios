@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SingleChat: View {
-    @EnvironmentObject public var chatManager: ChatManager
+    @ObservedObject public var chatManager: ChatManager
     
     @State public var chat: Chat
     @State public var currentUserID: UUID

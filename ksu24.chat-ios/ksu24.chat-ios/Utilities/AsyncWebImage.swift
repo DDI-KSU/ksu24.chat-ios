@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct AsyncWebImage: View {
+    private var url:            URL
+    private var placeholder:    Image
+    
+    init(url: URL, placeholder: Image) {
+        self.url            = url
+        self.placeholder    = placeholder
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        placeholder
+            .resizable()
+            .onAppear {}
+            .onDisappear {}
     }
 }
 
-#Preview {
-    AsyncWebImage()
-}
+//#Preview {
+//    AsyncWebImage()
+//}
