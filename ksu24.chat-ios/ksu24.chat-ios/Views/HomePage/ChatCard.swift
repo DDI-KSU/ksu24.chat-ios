@@ -11,51 +11,73 @@ struct ChatCard: View {
     var chat: Chat
     
     var body: some View {
-        HStack {
-            if let stringUrl = chat.image {
-                AsyncImage(url: URL(string: stringUrl)) { image in
-                    image.image?
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 60, height: 60)
-                        .foregroundStyle(Color(.systemGray2))
+        VStack(spacing: 0) {
+            HStack {
+                avatar
+                
+                VStack(alignment: .leading) {
+                    title
+                    lastMessage
                 }
                 
-               
-            } else {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 60, height: 60)
-                    .foregroundStyle(Color(.systemGray2))
-            }
-            
-            VStack(alignment: .leading) {
-                Text(chat.name)
-                    .font(.headline)
-                    .foregroundStyle(Color.black)
-                    .lineLimit(1)
+                Spacer()
                 
-                Text(chat.lastMessage.content)
-                    .font(.subheadline)
-                    .foregroundStyle(Color.gray)
-                    .lineLimit(1)
-                    .frame(maxWidth: UIScreen.main.bounds.width - 100, alignment: .leading)
+                if let date = parseDateString(chat.lastMessage.created) {
+                    lastMessageDate(date)
+                }
             }
+            .padding(.horizontal, 12)
+            .frame(height: 72)
             
-            Spacer()
-            
-            if let date = parseDateString(chat.lastMessage.created) {
-                Text(date.previewDate())
-                    .font(.caption)
-                    .foregroundStyle(Color.gray)
-                    .lineLimit(1)
+            GeometryReader { geometry in
+                underlyingStrip(geometry: geometry)
             }
         }
-        .padding(.horizontal, 12)
-        .frame(height: 72)
+    }
+    
+    private var title: some View {
+        Text(chat.name)
+            .font(.headline)
+            .foregroundStyle(Color.black)
+            .lineLimit(1)
+    }
+    
+    private var lastMessage: some View {
+        Text(chat.lastMessage.content)
+            .font(.subheadline)
+            .foregroundStyle(Color.gray)
+            .lineLimit(1)
+            .frame(maxWidth: UIScreen.main.bounds.width - 100, alignment: .leading)
+    }
+    
+    private func lastMessageDate(_ date: Date) ->  some View {
+            Text(date.previewDate())
+                .font(.caption)
+                .foregroundStyle(Color.gray)
+                .lineLimit(1)
+    }
+    
+    private func underlyingStrip(geometry: GeometryProxy) -> some View {
+        Rectangle()
+            .frame(width: nil, height: 1, alignment: .bottomLeading)
+            .foregroundColor(Color(.systemGray5))
+            .padding(.leading, 12)
+            .offset(x: geometry.size.width * 0.15)
+    }
+    
+    @ViewBuilder
+    private var avatar: some View {
+        if let stringUrl = chat.image, let url = URL(string: stringUrl) {
+             AsyncWebImage(url: url, placeholder: AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar()))
+        } else {
+             AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar())
+        }
     }
 }
+    
+    
+     
+
 
 
 //#Preview {
