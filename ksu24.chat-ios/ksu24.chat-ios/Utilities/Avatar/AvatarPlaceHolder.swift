@@ -8,16 +8,23 @@
 import SwiftUI
 
 struct AvatarPlaceHolder: View {
+    var letters: String
+    
     var body: some View {
-        Image(systemName: "person.circle.fill")
-               .resizable()
-               .scaledToFill()
+       ZStack(alignment: .center) {
+            Circle()
+               .fill(Color.random())
                .frame(width: 60, height: 60)
-               .foregroundStyle(Color(.systemGray2))
+           
+          
+           Text(letters)
+               .font(.headline)
+               .foregroundColor(.white)
+        }
    }
 }
 
-
-#Preview {
-    AvatarPlaceHolder()
-}
+//
+//#Preview {
+//    AvatarPlaceHolder(chatName: "K")
+//}
