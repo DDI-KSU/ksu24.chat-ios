@@ -46,7 +46,7 @@ struct ChatHeader: View {
                         .font(.headline)
                         .foregroundStyle(Color(.systemGray))
                     
-                    Text(chat.lastMessage?.sender?.lastActivity ?? "Online")
+                    Text(chat.lastMessage.sender?.lastActivity ?? "Online")
                         .font(.subheadline)
                         .foregroundStyle(Color(.systemGray))
                 }

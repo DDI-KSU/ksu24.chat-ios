@@ -15,7 +15,7 @@ struct Chat: Codable, Identifiable, Hashable {
     var isChannel:                  Bool
     var isPrivate:                  Bool
     var image:                      String?
-    var lastMessage:                LastMessage?
+    var lastMessage:                LastMessage
     var messagesSinceLastChecked:   Int?
     var conversationType:           Int
 }

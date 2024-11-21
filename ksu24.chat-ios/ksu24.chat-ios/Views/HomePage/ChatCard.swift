@@ -36,7 +36,7 @@ struct ChatCard: View {
                     .foregroundStyle(Color.black)
                     .lineLimit(1)
                 
-                Text(chat.lastMessage?.content ?? "Send your first message")
+                Text(chat.lastMessage.content)
                     .font(.subheadline)
                     .foregroundStyle(Color.gray)
                     .lineLimit(1)
@@ -45,11 +45,12 @@ struct ChatCard: View {
             
             Spacer()
             
-            Text(chat.lastMessage?.created ?? "Today")
-                .font(.caption)
-                .foregroundStyle(Color.gray)
-                .lineLimit(1)
-                
+            if let date = parseDateString(chat.lastMessage.created) {
+                Text(date.previewDate())
+                    .font(.caption)
+                    .foregroundStyle(Color.gray)
+                    .lineLimit(1)
+            }
         }
         .padding(.horizontal, 12)
         .frame(height: 72)
