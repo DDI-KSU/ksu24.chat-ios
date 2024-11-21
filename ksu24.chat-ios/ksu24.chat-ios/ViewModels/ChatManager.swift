@@ -67,10 +67,13 @@ class ChatManager: ObservableObject {
     }
     
     public func getChatPartnerID(currentUserID: UUID) -> Member {
-        var partner: Member = members.first(where: { $0.id != currentUserID }) ?? Member(id: UUID(), fullName: "", shortName: "", lastActivity: "")
+        let partner: Member = members.first(where: { $0.id != currentUserID }) ?? Member(id: UUID(), fullName: "", shortName: "", lastActivity: "")
         
         print(partner.fullName)
         
         return partner
     }
 }
+
+
+
