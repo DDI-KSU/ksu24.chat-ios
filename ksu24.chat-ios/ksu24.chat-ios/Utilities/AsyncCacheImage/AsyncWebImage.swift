@@ -11,9 +11,9 @@ struct AsyncWebImage: View {
     @ObservedObject var binder = AsyncImageBinder()
     
     private var url:            URL
-    private var placeholder:    PlaceHolder
+    private var placeholder:    AvatarPlaceHolder
     
-    init(url: URL, placeholder: PlaceHolder) {
+    init(url: URL, placeholder: AvatarPlaceHolder) {
         self.url            = url
         self.placeholder    = placeholder
         
