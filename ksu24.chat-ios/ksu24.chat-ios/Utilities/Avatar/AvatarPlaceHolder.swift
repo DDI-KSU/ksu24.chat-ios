@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlaceHolder: View {
+struct AvatarPlaceHolder: View {
     var body: some View {
         Image(systemName: "person.circle.fill")
                .resizable()
@@ -19,5 +19,5 @@ struct PlaceHolder: View {
 
 
 #Preview {
-    PlaceHolder()
+    AvatarPlaceHolder()
 }
