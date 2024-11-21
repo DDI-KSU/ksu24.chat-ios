@@ -32,13 +32,12 @@ struct ChatHeader: View {
                 
                 if let stringUrl =  member.image {
                     if let url = URL(string: stringUrl) {
-                        AsyncWebImage(url: url, placeholder: PlaceHolder())
+                        AsyncWebImage(url: url, placeholder: AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar()))
                     }
                 } else {
-                    PlaceHolder()
+                    AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar())
                         .frame(width: 60, height: 60)
                 }
-         
                 
                 
                 VStack(alignment: .leading) {
@@ -49,16 +48,18 @@ struct ChatHeader: View {
                     Text(chat.lastMessage.sender?.lastActivity ?? "Online")
                         .font(.subheadline)
                         .foregroundStyle(Color(.systemGray))
+                    
+                        
                 }
                 
                 Spacer()
             } else {
                 if let stringUrl = chat.image {
                     if let url = URL(string: stringUrl) {
-                        AsyncWebImage(url: url, placeholder: PlaceHolder())
+                        AsyncWebImage(url: url, placeholder: AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar()))
                     }
                 } else {
-                    PlaceHolder()
+                    AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar())
                         .scaledToFill()
                         .frame(width: 60, height: 60)
                 }
@@ -72,11 +73,15 @@ struct ChatHeader: View {
                 
                 Spacer()
             }
+            
 
         }
         .frame(minWidth: 72)
         .padding(.horizontal, 12)
+        
+      
     }
+
 }
         
    
