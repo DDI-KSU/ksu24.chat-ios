@@ -9,24 +9,24 @@ import Foundation
 import SwiftUI
 
 enum AvatarPlaceHolderColor: CaseIterable {
-    case PURPLE
+    case DARKRED
     case GREEN
     case BLUE
-    case ORANGE
+    case YELLOW
     case PINK
     
     var color: Color {
         switch self {
-        case .PURPLE:
-            return Color.purple
+        case .DARKRED:
+            return Color(red: 238 / 255, green: 99 / 255, blue: 82 / 255)
         case .GREEN:
-            return Color.green
+            return Color(red: 89 / 255, green: 205 / 255, blue: 144 / 255)
         case .BLUE:
-            return Color.blue
-        case .ORANGE:
-            return Color.orange
+            return Color(red: 63 / 255, green: 167 / 255, blue: 214 / 255)
+        case .YELLOW:
+            return Color(red: 250 / 255, green: 192 / 255, blue: 94 / 255)
         case .PINK:
-            return Color.pink
+            return Color(red: 247 / 255, green: 157 / 255, blue: 132 / 255)
         }
     }
 }

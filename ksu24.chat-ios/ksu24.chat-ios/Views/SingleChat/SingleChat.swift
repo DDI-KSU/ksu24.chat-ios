@@ -13,12 +13,26 @@ struct SingleChat: View {
     @State public var chat: Chat
     @State public var currentUserID: UUID
     
+    @State public var text: String = ""
+    
     
     
     var body: some View {
         VStack {
             ChatHeader(chat: chat, chatManager: chatManager)
             MessageList(messages: chatManager.messages, currentUserID: currentUserID)
+            
+            HStack {
+                TextField("Enter message..", text: $text)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                Button {
+                    
+                } label: {
+                    Image(systemName: "paperplane")
+                }
+                .disabled(text.isEmpty)
+            }
+            .padding()
         }
         .onAppear {
             chatManager.loadMessages(withID: chat.id)
