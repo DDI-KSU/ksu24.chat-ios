@@ -20,28 +20,28 @@ struct AttachmentFile: View {
     @State private var localFileURL: URL?
     @State private var showQuickLook: Bool = false
     
+    private var isFromCurrentUser: Bool {
+        message.isFromCurrentUser(currentUserID: currentUserID)
+    }
+    
     
     var body: some View {
         VStack {
            HStack {
-               Image(systemName: iconName(for: attachment.originalFilename))
-                   .resizable()
-                   .frame(width: 24, height: 24)
-                   .foregroundColor(.blue)
-
                VStack(alignment: .leading) {
                    Text(attachment.originalFilename)
                        .font(.system(size: 16)).bold()
                        .lineLimit(1)
-                       .foregroundColor(.black)
+                       .foregroundColor(isFromCurrentUser ? .white : .black)
 
                    Text("\(attachment.fileSize / 1024) MB")
                        .font(.caption)
-                       .foregroundColor(Color(.systemGray3))
+                       .foregroundColor(isFromCurrentUser ? .white.opacity(0.8) : Color(.systemGray3))
                    
                    Text(message.content)
                        .font(.system(size: 14))
-                       .foregroundColor(.primary)
+                       .foregroundColor(isFromCurrentUser ? .white : .black)
+                       .padding(.top, 3)
                }
 
                Spacer()
@@ -53,16 +53,11 @@ struct AttachmentFile: View {
                    Button(action: {
                        openFile(urlString: baseURLString + attachment.file)
                    }) {
-                       Image(systemName: "arrow.down.circle")
-                           .resizable()
-                           .frame(width: 24, height: 24)
-                           .foregroundColor(.blue)
+                       iconImage(for: iconName(for: attachment.originalFilename))
                    }
                }
            }
            .padding(8)
-//           .clipShape(ChatBubble(isFromCurrentUser: message.isFromCurrentUser(currentUserID: profileID ?? UUID())))
-//           .background(Color(.systemGray4))
         }
         .sheet(isPresented: $showQuickLook) {
            if let fileURL = localFileURL {
@@ -70,8 +65,18 @@ struct AttachmentFile: View {
            }
         }
     }
+    
+    @ViewBuilder
+    private func iconImage(for name: String) -> some View {
+        Image(systemName: name)
+            .resizable()
+            .frame(width: 24, height: 24)
+            .foregroundColor(isFromCurrentUser ? .white : .blue)
+    }
+    
+  
 
-    func iconName(for fileName: String) -> String {
+    private func iconName(for fileName: String) -> String {
         if let ext = fileName.split(separator: ".").last?.lowercased() {
             switch ext {
             case "pdf":
@@ -89,7 +94,7 @@ struct AttachmentFile: View {
         return "doc"
     }
 
-    func openFile(urlString: String) {
+    private func openFile(urlString: String) {
         guard let url = URL(string: urlString) else { return }
 
                 isDownloading = true
@@ -139,7 +144,7 @@ struct AttachmentFile: View {
                }
            }
 
-           let observation = task.progress.observe(\.fractionCompleted) { progress, _ in
+        _ = task.progress.observe(\.fractionCompleted) { progress, _ in
                DispatchQueue.main.async {
                    self.downloadProgress = progress.fractionCompleted
                }
