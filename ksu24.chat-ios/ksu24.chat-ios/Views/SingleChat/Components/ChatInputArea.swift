@@ -12,42 +12,48 @@ struct ChatInputArea: View {
     
     var body: some View {
         VStack {
-            //            Rectangle()
-            //                .frame(width: UIScreen.main.bounds.width, height: 1)
-            //                .foregroundColor(Color(.systemGray5))
-            //                .offset(y: 8)
             Divider()
-                .offset(y: 15)
+                .offset(y: 18)
             
             ZStack(alignment: .trailing) {
-               
-                TextField("Enter message..", text: $text)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding(.leading, 15)
+                inputBar
+                
                 HStack {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "paperclip")
-                    }
-                    .padding(.trailing, 9)
+                    paperclipButton
                     
-                    Button {
-                        
-                    } label: {
-                        Text("Send")
-                            .foregroundStyle(text.isEmpty ? Color(.systemGray3) : .blue)
-                    }
-                    .disabled(text.isEmpty)
-                    
+                    sendButton
                 }
                 .padding(.trailing, 12)
-                }
-                
+            }
             .padding()
         }
         .ignoresSafeArea(.all)
-        .frame(maxHeight: 30)
+        .frame(maxHeight: 50)
+    }
+    
+    private var inputBar: some View {
+        TextField("Enter message..", text: $text)
+            .textFieldStyle(PlainTextFieldStyle())
+            .padding(.leading, 15)
+    }
+    
+    private var paperclipButton: some View {
+        Button {
+            
+        } label: {
+            Image(systemName: "paperclip")
+        }
+        .padding(.trailing, 9)
+    }
+    
+    private var sendButton: some View {
+        Button {
+            
+        } label: {
+            Text("Send")
+                .foregroundStyle(text.isEmpty ? Color(.systemGray3) : .blue)
+        }
+        .disabled(text.isEmpty)
     }
 }
 
