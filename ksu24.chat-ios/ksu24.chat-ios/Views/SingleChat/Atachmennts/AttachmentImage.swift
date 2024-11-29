@@ -9,13 +9,14 @@ import SwiftUI
 
 struct AttachmentImage: View {
     var urlString: String
-    var withText: String
+    var message: Message
+    var currentUserID: UUID
     
     var baseURLString: String = "https://ksu24.kspu.edu"
     
     var body: some View {
         if let url = URL(string: baseURLString + urlString) {
-            VStack {
+            VStack(alignment: .leading) {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:
@@ -40,9 +41,10 @@ struct AttachmentImage: View {
                     }
                 }
                 
-                Text(withText)
+                Text(message.content)
                     .font(.caption)
                     .foregroundStyle(.primary)
+                    .padding(5)
             }
         } else {
             // Invalid URL

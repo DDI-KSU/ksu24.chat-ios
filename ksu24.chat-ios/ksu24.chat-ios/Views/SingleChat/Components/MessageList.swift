@@ -11,10 +11,12 @@ struct MessageList: View {
     public var messages: [Message]
     public var currentUserID: UUID
     
+    public var chat: Chat
+    
     var body: some View {
         ScrollView {
             ForEach(messages.reversed()) { message in
-                    MessageRow(message: message, currentUserID: currentUserID)
+                MessageRow(message: message, currentUserID: currentUserID, chat: chat)
                 }
             }
             Spacer()

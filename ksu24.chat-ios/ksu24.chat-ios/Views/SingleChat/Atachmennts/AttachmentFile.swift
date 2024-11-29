@@ -9,8 +9,11 @@ import SwiftUI
 
 struct AttachmentFile: View {
     var attachment: File
-    var withText: String
+    var message: Message
     var baseURLString: String = "https://ksu24.kspu.edu"
+    var currentUserID: UUID
+    
+    @Environment(\.profileID) var profileID
     
     @State private var isDownloading: Bool = false
     @State private var downloadProgress: Double = 0.0
@@ -28,15 +31,16 @@ struct AttachmentFile: View {
 
                VStack(alignment: .leading) {
                    Text(attachment.originalFilename)
-                       .font(.subheadline)
-                       .foregroundColor(.primary)
+                       .font(.system(size: 16)).bold()
+                       .lineLimit(1)
+                       .foregroundColor(.black)
 
-                   Text("\(attachment.fileSize) KB")
+                   Text("\(attachment.fileSize / 1024) MB")
                        .font(.caption)
-                       .foregroundColor(.secondary)
+                       .foregroundColor(Color(.systemGray3))
                    
-                   Text(withText)
-                       .font(.subheadline)
+                   Text(message.content)
+                       .font(.system(size: 14))
                        .foregroundColor(.primary)
                }
 
@@ -57,8 +61,8 @@ struct AttachmentFile: View {
                }
            }
            .padding(8)
-           .background(Color(.systemGray5))
-           .cornerRadius(8)
+//           .clipShape(ChatBubble(isFromCurrentUser: message.isFromCurrentUser(currentUserID: profileID ?? UUID())))
+//           .background(Color(.systemGray4))
         }
         .sheet(isPresented: $showQuickLook) {
            if let fileURL = localFileURL {

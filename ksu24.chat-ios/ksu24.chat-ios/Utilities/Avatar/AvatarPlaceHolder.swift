@@ -9,12 +9,13 @@ import SwiftUI
 
 struct AvatarPlaceHolder: View {
     var letters: String
+    var frameSize: CGFloat
     
     var body: some View {
        ZStack(alignment: .center) {
             Circle()
                .fill(Color.random())
-               .frame(width: 60, height: 60)
+               .frame(width: frameSize, height: frameSize)
            
           
            Text(letters)

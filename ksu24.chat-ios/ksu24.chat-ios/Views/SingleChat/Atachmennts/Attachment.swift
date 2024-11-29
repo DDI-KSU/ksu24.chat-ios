@@ -9,13 +9,14 @@ import SwiftUI
 
 struct AttachmentView: View {
     var attachment: File
-    var withText: String
+    var message: Message
+    var currentUserID: UUID
 
     var body: some View {
         if isImage(fileName: attachment.originalFilename) {
-            AttachmentImage(urlString: attachment.file, withText: withText)
+            AttachmentImage(urlString: attachment.file, message: message, currentUserID: currentUserID)
         } else {
-            AttachmentFile(attachment: attachment, withText: withText)
+            AttachmentFile(attachment: attachment, message: message, currentUserID: currentUserID)
         }
     }
 
