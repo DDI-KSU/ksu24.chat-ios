@@ -19,6 +19,7 @@ struct MessageList: View {
                 MessageRow(message: message, currentUserID: currentUserID, chat: chat)
                 }
             }
+        
             Spacer()
     }
 }
