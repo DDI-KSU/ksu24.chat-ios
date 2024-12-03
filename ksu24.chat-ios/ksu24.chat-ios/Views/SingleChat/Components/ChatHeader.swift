@@ -35,7 +35,7 @@ struct ChatHeader: View {
                             title
                                 .font(.system(size: 22).bold())
                                 .foregroundStyle(Color(.black))
-                                .lineLimit(1)
+                                
                                 .offset(y: 3)
                             
                             lastSeenDate(from: chat.lastMessage.sender?.lastActivity)
@@ -54,7 +54,7 @@ struct ChatHeader: View {
                 }
             }
             
-            headerDivider
+//            headerDivider
         }
         .frame(minWidth: 72)
         .offset(x: -10)
@@ -62,13 +62,15 @@ struct ChatHeader: View {
     
     @ViewBuilder
     private func avatar(from image: String?) ->  some View {
-        if let stringUrl =  image {
-            if let url = URL(string: stringUrl) {
-                AsyncWebImage(url: url, placeholder: AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar(), frameSize: 50))
-                    .frame(width: 50, height: 50)
-            }
+        if let urlString = image, let url = URL(string: urlString) {
+            AsyncWebImage(
+                url: url,
+                placeholder: AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar(), frameSize: 40),
+                size: 40
+            )
+                .padding(.trailing, 5)
         } else {
-            AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar(), frameSize: 50)
+            AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar(), frameSize: 40)
         }
     }
     
@@ -82,6 +84,7 @@ struct ChatHeader: View {
         if let date = parseDateString(chat.lastMessage.sender?.lastActivity ?? "") {
             Text("last seen: \(date.previewDate())")
                 .font(.subheadline)
+                .lineLimit(1)
                 .foregroundStyle(Color(.systemGray))
         }
     }

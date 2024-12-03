@@ -68,7 +68,11 @@ struct ChatCard: View {
     @ViewBuilder
     private var avatar: some View {
         if let stringUrl = chat.image, let url = URL(string: stringUrl) {
-            AsyncWebImage(url: url, placeholder: AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar(), frameSize: 60))
+            AsyncWebImage(
+                url: url,
+                placeholder: AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar(), frameSize: 60),
+                size: 60
+            )
         } else {
             AvatarPlaceHolder(letters: chat.name.takeLettersForAvatar(), frameSize: 60)
         }

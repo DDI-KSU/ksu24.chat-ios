@@ -14,13 +14,15 @@ struct MessageList: View {
     public var chat: Chat
     
     var body: some View {
+        Divider()
+        
         ScrollView {
+            Spacer()
+            
             ForEach(messages.reversed()) { message in
                 MessageRow(message: message, currentUserID: currentUserID, chat: chat)
                 }
             }
-        
-            Spacer()
     }
 }
 

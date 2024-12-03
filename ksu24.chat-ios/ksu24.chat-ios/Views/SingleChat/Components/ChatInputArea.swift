@@ -12,8 +12,8 @@ struct ChatInputArea: View {
     
     var body: some View {
         VStack {
-            Divider()
-                .offset(y: 18)
+//            Divider()
+//                .offset(y: 18)
             
             ZStack(alignment: .trailing) {
                 inputBar
@@ -28,7 +28,7 @@ struct ChatInputArea: View {
             .padding()
         }
         .ignoresSafeArea(.all)
-        .frame(maxHeight: 50)
+        .frame(maxHeight: 40)
     }
     
     private var inputBar: some View {

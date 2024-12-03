@@ -16,11 +16,11 @@ struct SingleChat: View {
     @State public var text: String = ""
 
     var body: some View {
-        VStack {
-            Spacer()
+        VStack(spacing: 0) {
+//            Spacer()
             
             MessageList(messages: chatManager.messages, currentUserID: currentUserID, chat: chat)
-                .offset(y: 20)
+//                .offset(y: 20)
                
             ChatInputArea(text: text)
            

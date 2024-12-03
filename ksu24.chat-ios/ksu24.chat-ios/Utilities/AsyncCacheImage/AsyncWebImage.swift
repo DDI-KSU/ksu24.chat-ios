@@ -13,9 +13,12 @@ struct AsyncWebImage: View {
     private var url:            URL
     private var placeholder:    AvatarPlaceHolder
     
-    init(url: URL, placeholder: AvatarPlaceHolder) {
+    var size: CGFloat
+    
+    init(url: URL, placeholder: AvatarPlaceHolder, size: CGFloat) {
         self.url            = url
         self.placeholder    = placeholder
+        self.size           = size
         
         self.binder.load(url: self.url)
     }
@@ -27,7 +30,8 @@ struct AsyncWebImage: View {
                     .renderingMode(.original)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 60, height: 60)
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
             } else {
                 placeholder
             }
