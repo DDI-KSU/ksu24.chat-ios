@@ -21,6 +21,14 @@ struct MessageRow: View {
         !message.attachments.isEmpty
     }
     
+    private var isReactionAttached: Bool {
+        !message.reactions.isEmpty
+    }
+    
+    private var isReactionFromCurrentUser: Bool {
+        message.reactions.contains(where: { $0.person.id == currentUserID })
+    }
+    
     private var chatType: ChatType {
         if chat.isPrivate {
             .PRIVATE
@@ -42,42 +50,48 @@ struct MessageRow: View {
                 }
                 
             VStack(alignment: isFromCurrentUser ? .trailing : .leading) {
-                    if let reply =  message.replyTo  {
-                        replyView(from: reply)
-                            .background(isFromCurrentUser ? .white.opacity(0.1) : .blue.opacity(0.1))
-                            .clipShape(
-                                .rect(
-                                    topLeadingRadius: 0,
-                                    bottomLeadingRadius: 0,
-                                    bottomTrailingRadius: 16,
-                                    topTrailingRadius: 16
-                                )
+                if let reply =  message.replyTo  {
+                    replyView(from: reply)
+                        .background(isFromCurrentUser ? .white.opacity(0.1) : .blue.opacity(0.1))
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 0,
+                                bottomTrailingRadius: 16,
+                                topTrailingRadius: 16
                             )
-                            .frame(maxWidth: UIScreen.main.bounds.width * 0.5, maxHeight: 50)
-                            .padding(.top, 5)
-                            .padding(.horizontal, 10)
-                    }
-                    
-                    if isFileAttached {
-                        ForEach(message.attachments, id: \.file) { attachment in
-                            attachmentView(attachment: attachment)
-                        }
-                    }
-                    
-                    if !isFileAttached {
-                        messageContent
-                    }
+                        )
+                        .frame(maxWidth: UIScreen.main.bounds.width * 0.5, maxHeight: 50)
+                        .padding(.top, 5)
+                        .padding(.horizontal, 10)
                 }
-                .background(isFromCurrentUser ? Color.blue : Color(.systemGray5))
-                .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
-                .frame(maxWidth: UIScreen.main.bounds.width / 1.75, alignment: isFromCurrentUser ? .trailing : .leading)
                 
-                if !isFromCurrentUser {
-                    Spacer()
+                if isFileAttached {
+                    ForEach(message.attachments, id: \.file) { attachment in
+                        attachmentView(attachment: attachment)
+                    }
                 }
-                    
+                
+                if !isFileAttached {
+                    messageContent
+                }
+            
+                if isReactionAttached {
+                    reactions(from: message)
+                        .padding(.horizontal, 3)
+                        .padding(.bottom, 3)
+                }
             }
-            .padding(.horizontal, 5)
+            .background(isFromCurrentUser ? Color.blue : Color(.systemGray5))
+            .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+            .frame(maxWidth: UIScreen.main.bounds.width / 1.75, alignment: isFromCurrentUser ? .trailing : .leading)
+            
+            if !isFromCurrentUser {
+                Spacer()
+            }
+                    
+        }
+        .padding(.horizontal, 5)
         
         Spacer()
     }
@@ -132,6 +146,30 @@ struct MessageRow: View {
                 .padding(.trailing, 5)
         } else {
             AvatarPlaceHolder(letters: message.sender.fullName.takeLettersForAvatar(), frameSize: 40)
+        }
+    }
+    
+    @ViewBuilder
+    private func reactions(from message: Message) -> some View {
+        let reactionsString: [String] = message.reactions.map { $0.reaction }
+        
+        let mappedReaction = reactionsString.map { ($0, 1) }
+        
+        let counts = Dictionary(mappedReaction, uniquingKeysWith: +)
+        
+        HStack {
+            ForEach(Array(counts.keys), id: \.self) { reaction in
+                if let count = counts[reaction] {
+                    
+                    Text(reaction + " \(count)")
+                        .padding(3)
+                        .background(
+                            isFromCurrentUser ? Color.white.opacity(isReactionFromCurrentUser ? 1 : 0.1) :
+                                Color.blue.opacity(isReactionFromCurrentUser ? 1 : 0.1))
+                        .clipShape(Capsule())
+                    //                .frame(maxWidth: 20, maxHeight: )
+                }
+            }
         }
     }
 }

@@ -25,7 +25,9 @@ struct Reply: Codable, Identifiable {
     var attachments:    [File] = []
 }
 
-struct Reaction: Codable {
+struct Reaction: Codable, Hashable {
+//    var id: UUID = UUID()
+    
     var person:     Member
     var reaction:   String
     var created:    String
