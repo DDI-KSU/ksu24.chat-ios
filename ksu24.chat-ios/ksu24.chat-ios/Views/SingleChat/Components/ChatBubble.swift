@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: change bubble shape
 struct ChatBubble: Shape {
     let isFromCurrentUser: Bool
     

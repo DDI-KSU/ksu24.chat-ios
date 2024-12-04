@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: load all of messages
 struct SingleChat: View {
     @ObservedObject public var chatManager: ChatManager
     

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// TODO: Keyboard focus on replying
+// TODO: send messages (WebSockets are required)
 struct ChatInputArea: View {
     @State var text: String = ""
     

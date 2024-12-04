@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: complete MVVM 
 struct RootView: View {
     @ObservedObject var authManager: AuthManager
     @ObservedObject var chatManager: ChatManager

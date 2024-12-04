@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: more clear way od managin images
 struct AsyncWebImage: View {
     @ObservedObject var binder = AsyncImageBinder()
     

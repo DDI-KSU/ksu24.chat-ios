@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// TODO: assign to each user "theirs" color
 enum AvatarPlaceHolderColor: CaseIterable {
     case DARKRED
     case GREEN

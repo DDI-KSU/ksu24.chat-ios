@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: Save files to internal storage
 struct AttachmentFile: View {
     var attachment: File
     var message: Message

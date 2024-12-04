@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// TODO: change objects' position/alignment
+// TODO: fix avatar in private chats
 struct ChatHeader: View {
     public var chat:    Chat
     

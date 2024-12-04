@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+// TODO: Replying gesture
+// TODO: Show message views / list of reactions
+// TODO: Username on messages in group chats
+// TODO: Poll view
+// TODO: sent date
+// TODO: message has been seen / sent
 struct MessageRow: View {
     var message: Message
     var currentUserID: UUID

@@ -7,9 +7,11 @@
 
 import SwiftUI
 
+// TODO: Profile page
+// TODO: Activate create new chat button
+// TODO: Fix search mechanic
+// TODO: search bar pull out
 struct HomePage: View {
-   
-    
     @ObservedObject public var chatManager:     ChatManager
     @ObservedObject public var profileManager:  ProfileManager
     

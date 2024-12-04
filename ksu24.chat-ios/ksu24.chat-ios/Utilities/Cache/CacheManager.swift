@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Cache messages, images, files etc.
 class CacheManager {
     static let shared = CacheManager()
     

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Complete profile model
 public struct Profile: Codable {
     public var id:      UUID
     public var name:    String

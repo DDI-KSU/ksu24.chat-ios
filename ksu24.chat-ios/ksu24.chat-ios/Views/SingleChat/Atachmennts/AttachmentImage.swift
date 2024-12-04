@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: view images in fuull screen
 struct AttachmentImage: View {
     var urlString: String
     var message: Message
