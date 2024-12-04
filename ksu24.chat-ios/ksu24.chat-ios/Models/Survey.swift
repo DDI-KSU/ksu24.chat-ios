@@ -6,22 +6,22 @@
 //
 import Foundation
 
-struct Survey: Codable {
+struct Survey: Codable, Identifiable {
     var id:             UUID
     var content:        String
-    var started:        String
+    var start:        String
     var end:            String
-    var is_anonymous:   Bool
+    var is_anonymous:   Bool?
     var questions:      [Question]
 }
 
-struct Question: Codable {
+struct Question: Codable, Identifiable {
     var id:         UUID
     var content:    String
     var answers:    [Answer]
 }
 
-struct Answer: Codable {
+struct Answer: Codable, Identifiable {
     var id:         UUID
     var content:    String
 }
