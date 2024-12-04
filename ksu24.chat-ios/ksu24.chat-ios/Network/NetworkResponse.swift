@@ -10,7 +10,7 @@ import Foundation
 // TODO: Reconsider response handling (model is included)
 struct NetworkResponse<Wrapped: Codable>: Codable {
     var count:      Int
-    var next:       String?
-    var preivous:   String?
+//    var next:       String?
+//    var preivous:   String?
     var results:    [Wrapped]
 }

@@ -53,6 +53,8 @@ struct ChatHeader: View {
                         .foregroundStyle(Color(.systemGray))
                     
                     Spacer()
+                    
+                    
                 }
             }
             

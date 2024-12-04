@@ -34,6 +34,10 @@ struct SingleChat: View {
         .onAppear {
             chatManager.loadMessages(withID: chat.id)
             chatManager.loadMembers(withID: chat.id)
+            
+            if !chat.isPrivate {
+                chatManager.loadSurveys(withID: chat.id)
+            }
         }
     }
 }

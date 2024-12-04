@@ -12,6 +12,7 @@ class ChatManager: ObservableObject {
     @Published public var chats:    [Chat]    = []
     @Published public var messages: [Message] = []
     @Published public var members:  [Member]  = []
+    @Published public var surveys:  [Survey]  = []
     
     private var NRL:            NetworkResponseLoader
     private var cancellables = Set<AnyCancellable>()
@@ -64,6 +65,22 @@ class ChatManager: ObservableObject {
                     self.members = result
                 })
                 .store(in: &cancellables)
+    }
+    
+    public func loadSurveys(withID: UUID) {
+        NRL.loadCollactable(modelType: Survey.self, endpoint: .surveys(withID: withID), method: "GET")
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Login failed: \(error)")
+                    }
+                },
+                receiveValue: { result in
+                    self.surveys = result
+                })
+            .store(in: &cancellables)
+                
     }
     
     public func getChatPartnerID(currentUserID: UUID) -> Member {
