@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 public struct Popup<PopupContent>: ViewModifier where PopupContent: View {
-
     init(isPresented: Binding<Bool>,
             view: @escaping () -> PopupContent) {
            self._isPresented = isPresented
@@ -80,15 +79,22 @@ public struct Popup<PopupContent>: ViewModifier where PopupContent: View {
     }
 }
 
+private extension GeometryProxy {
+    var belowScreenEdge: CGFloat {
+        UIScreen.main.bounds.height - frame(in: .global).minY
+    }
+}
+
+
 extension View {
+
     public func popup<PopupContent: View>(
         isPresented: Binding<Bool>,
         view: @escaping () -> PopupContent) -> some View {
-            self.modifier(
-                Popup(
-                    isPresented: isPresented,
-                    view: view
-                )
-            )
-        }
+        self.modifier(
+            Popup(
+                isPresented: isPresented,
+                view: view)
+        )
+    }
 }
