@@ -12,7 +12,6 @@ class ChatManager: ObservableObject {
     @Published public var chats:    [Chat]    = []
     @Published public var messages: [Message] = []
     @Published public var members:  [Member]  = []
-    @Published public var surveys:  [Survey]  = []
     
     private var NRL:            NetworkResponseLoader
     private var cancellables = Set<AnyCancellable>()
@@ -30,8 +29,8 @@ class ChatManager: ObservableObject {
                         print("Login failed: \(error)")
                     }
                 },
-                receiveValue: { result in
-                    self.chats = result
+                receiveValue: { ns in
+                    self.chats = ns.results
                 })
                 .store(in: &cancellables)
     }
@@ -45,8 +44,8 @@ class ChatManager: ObservableObject {
                         print("Login failed: \(error)")
                     }
                 },
-                receiveValue: { result in
-                    self.messages = result
+                receiveValue: { ns in
+                    self.messages = ns.results
                 })
                 .store(in: &cancellables)
             
@@ -61,27 +60,13 @@ class ChatManager: ObservableObject {
                         print("Login failed: \(error)")
                     }
                 },
-                receiveValue: { result in
-                    self.members = result
+                receiveValue: { ns in
+                    self.members = ns.results
                 })
                 .store(in: &cancellables)
     }
     
-    public func loadSurveys(withID: UUID) {
-        NRL.loadCollactable(modelType: Survey.self, endpoint: .surveys(withID: withID), method: "GET")
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { completion in
-                    if case .failure(let error) = completion {
-                        print("Login failed: \(error)")
-                    }
-                },
-                receiveValue: { result in
-                    self.surveys = result
-                })
-            .store(in: &cancellables)
-                
-    }
+    
     
     public func getChatPartnerID(currentUserID: UUID) -> Member {
         let partner: Member = members.first(where: { $0.id != currentUserID }) ?? Member(id: UUID(), fullName: "", shortName: "", lastActivity: "")

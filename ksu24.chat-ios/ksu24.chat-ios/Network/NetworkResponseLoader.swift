@@ -16,7 +16,7 @@ struct NetworkResponseLoader {
         endpoint:   Endpoint,
         method:     String,
         body:       RequestBody? = ""
-    ) -> AnyPublisher<[Model], Error> {
+    ) -> AnyPublisher<NetworkResponse<Model>, Error> {
         
         urlSession.collactablePublisher(for: endpoint.makeRequest(
             withMethod: method,
@@ -55,7 +55,7 @@ extension URLSession {
     func collactablePublisher<T: Codable>(
         for     request: URLRequest?,
         decoder:         JSONDecoder = .init()
-    ) -> AnyPublisher<[T], Error> {
+    ) -> AnyPublisher<NetworkResponse<T>, Error> {
         
         guard let request = request else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
@@ -81,7 +81,7 @@ extension URLSession {
                 
                 do {
                    let decodedData = try decoder.decode(NetworkResponse<T>.self, from: data)
-                    return decodedData.results
+                    return decodedData
                } catch {
                    print("Decoding error: \(error)")
                    throw error
