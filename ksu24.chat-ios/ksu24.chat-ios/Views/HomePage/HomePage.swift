@@ -15,6 +15,8 @@ struct HomePage: View {
     @ObservedObject public var chatManager:     ChatManager
     @ObservedObject public var profileManager:  ProfileManager
     
+    @ObservedObject public var surveyManager: SurveyManager
+    
     @State private var searchText: String  = ""
     @State private var filteredChats: [Chat] = []
     
@@ -81,6 +83,7 @@ struct HomePage: View {
                 .navigationDestination(for: Chat.self) { chat in
                     SingleChat(
                         chatManager: chatManager,
+                        surveyManager: surveyManager,
                         chat: chat,
                         currentUserID: profileManager.profile.id
                     )
