@@ -12,12 +12,13 @@ struct RootView: View {
     @ObservedObject var authManager: AuthManager
     @ObservedObject var chatManager: ChatManager
     @ObservedObject var profileManager: ProfileManager
+    @ObservedObject var surveyManager: SurveyManager
     
         
     var body: some View {
         Group {
             if authManager.isLoggedIn {
-               HomePage(chatManager: chatManager, profileManager: profileManager)
+                HomePage(chatManager: chatManager, profileManager: profileManager, surveyManager: surveyManager)
             } else {
                 AuthPage(authManager: authManager)
             }
