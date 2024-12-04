@@ -79,6 +79,6 @@ extension Endpoint {
     }
     
     static func surveys(withID id: Chat.ID) -> Self {
-        Endpoint(path: "/api/v2/my/chat/conversations/\(id)/surveys/")
+        Endpoint(path: "api/v2/my/chat/conversations/\(id)/surveys/")
     }
 }
