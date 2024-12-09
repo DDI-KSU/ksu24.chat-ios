@@ -11,10 +11,14 @@ import SwiftUI
 // TODO: fix avatar in private chats
 struct ChatHeader: View {
     public var chat:    Chat
-    
     public var chatManager: ChatManager
+    public var surveyManager: SurveyManager
+    
+    @Binding public var isSurveysPresented: Bool
     
     @Environment(\.profileID) var currentUserID
+    
+ 
     
     private var chatType: ChatType {
         if chat.isPrivate {
@@ -37,7 +41,6 @@ struct ChatHeader: View {
                             title
                                 .font(.system(size: 22).bold())
                                 .foregroundStyle(Color(.black))
-                                
                                 .offset(y: 3)
                             
                             lastSeenDate(from: chat.lastMessage.sender?.lastActivity)
@@ -49,18 +52,19 @@ struct ChatHeader: View {
                     avatar(from: chat.image)
                     
                     title
-                        .font(.headline)
-                        .foregroundStyle(Color(.systemGray))
+                        .font(.system(size: 22).bold())
+                        .foregroundStyle(Color(.black))
                     
                     Spacer()
                     
-                    
+                    surveyButton
+                       
                 }
             }
             
 //            headerDivider
         }
-        .frame(minWidth: 72)
+        .frame(width: UIScreen.main.bounds.width * 0.8)
         .offset(x: -10)
     }
     
@@ -98,6 +102,25 @@ struct ChatHeader: View {
             .frame(width: UIScreen.main.bounds.width)
             .foregroundColor(Color(.systemGray5))
             .offset(y: -2)
+    }
+    
+    private var surveyButton: some View {
+        ZStack(alignment: .topTrailing) {
+            Button {
+                isSurveysPresented.toggle()
+            } label: {
+                Image(systemName: "chart.bar.xaxis")
+            }
+            
+            
+//            Text(surveyManager.totalSurveys, format: .number.sign(strategy: .always()))
+//                .font(.largeTitle)
+//                .foregroundStyle(.white)
+//                .background(.red)
+//                .clipShape(Circle())
+            
+        }
+        
     }
 }
         

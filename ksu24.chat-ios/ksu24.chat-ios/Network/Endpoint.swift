@@ -35,7 +35,6 @@ extension Endpoint {
         
         if let body = body {
             if let bodyString = body as? String, bodyString.isEmpty {
-                
             } else {
                 do {
                     request.httpBody = try JSONEncoder().encode(body)
@@ -79,6 +78,10 @@ extension Endpoint {
     }
     
     static func surveys(withID id: Chat.ID) -> Self {
-        Endpoint(path: "api/v2/my/chat/conversations/\(id)/surveys/")
+        Endpoint(path: "api/v2/my/chat/conversations/\(id)/surveys")
+    }
+    
+    static func createSurvey(withID id: Chat.ID) -> Self {
+        Endpoint(path: "api/v2/my/chat/conversations/\(id)/post_survey/")
     }
 }

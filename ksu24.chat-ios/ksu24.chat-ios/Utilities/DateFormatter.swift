@@ -42,3 +42,9 @@ func parseDateString(_ dateString: String) -> Date? {
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXXXX"
     return formatter.date(from: dateString)
 }
+
+func parseDateToString(date: Date) -> String {
+    let dateFormatter = ISO8601DateFormatter()
+    dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    return dateFormatter.string(from: date)
+}

@@ -37,4 +37,18 @@ class SurveyManager: ObservableObject {
             .store(in: &cancellables)
                 
     }
+    
+    public func createSurvey(withID: UUID, body: CreatedSurvey) {
+        NRL.loadVoid(endpoint: .createSurvey(withID: withID), method: "POST", body: body)
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Login failed: \(error)")
+                    }
+                },
+                receiveValue: { ns in
+                    print(ns)
+                })
+            .store(in: &cancellables)
+    }
 }

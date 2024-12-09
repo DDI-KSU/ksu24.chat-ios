@@ -10,9 +10,12 @@ import SwiftUI
 // TODO: load all of messages
 struct SingleChat: View {
     @ObservedObject public var chatManager: ChatManager
+    @ObservedObject public var surveyManager: SurveyManager
     
     @State public var chat: Chat
     @State public var currentUserID: UUID
+    
+    @State var isSurveysPresented = false
     
     @State public var text: String = ""
 
@@ -26,17 +29,21 @@ struct SingleChat: View {
             ChatInputArea(text: text)
            
         }
+        .popup(isPresented: $isSurveysPresented) {
+            SurveyView(surveyManager: surveyManager, chatID: chat.id)
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                ChatHeader(chat: chat, chatManager: chatManager)
+                ChatHeader(chat: chat, chatManager: chatManager, surveyManager: surveyManager ,isSurveysPresented: $isSurveysPresented)
             }
         }
+        
         .onAppear {
             chatManager.loadMessages(withID: chat.id)
             chatManager.loadMembers(withID: chat.id)
             
             if !chat.isPrivate {
-                chatManager.loadSurveys(withID: chat.id)
+                surveyManager.loadSurveys(withID: chat.id)
             }
         }
     }
