@@ -18,7 +18,7 @@ struct RootView: View {
     var body: some View {
         Group {
             if authManager.isLoggedIn {
-                HomePage(chatManager: chatManager, profileManager: profileManager, surveyManager: surveyManager)
+                HomePage(chatManager: chatManager, profileManager: profileManager, surveyManager: surveyManager, authManager: authManager)
             } else {
                 AuthPage(authManager: authManager)
             }

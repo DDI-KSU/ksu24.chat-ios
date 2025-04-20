@@ -7,11 +7,45 @@
 
 import SwiftUI
 
+enum TabSelection: Hashable {
+    case chats
+    case settings
+}
+
 // TODO: Profile page
 // TODO: Activate create new chat button
 // TODO: Fix search mechanic
 // TODO: search bar pull out
 struct HomePage: View {
+    @State private var showNavigationBar = true
+    @State private var currentTab: TabSelection = .chats
+    
+    @ObservedObject public var chatManager:     ChatManager
+    @ObservedObject public var profileManager:  ProfileManager
+    
+    @ObservedObject public var surveyManager: SurveyManager
+    @ObservedObject public var authManager:     AuthManager
+    
+    var body: some View {
+        TabView(selection: $currentTab) {
+            Tab("Chats", systemImage: "message.fill", value: .chats) {
+                Chats(chatManager: chatManager, profileManager: profileManager, surveyManager: surveyManager)
+            }
+           
+            
+            Tab("Settings", systemImage: "gear", value: .settings) {
+                Settings(profileManager: profileManager, authManager: authManager)
+            }
+        }
+        
+    }
+}
+//#Preview {
+//    HomePage(chatManager: .init(), authManager: .init())
+//}
+
+struct Chats: View {
+    
     @ObservedObject public var chatManager:     ChatManager
     @ObservedObject public var profileManager:  ProfileManager
     
@@ -87,6 +121,7 @@ struct HomePage: View {
                         chat: chat,
                         currentUserID: profileManager.profile.id
                     )
+                    .environment(\.isBottomTabBarHidden, true)
                 }
                 .simultaneousGesture(dragGesture)
             }
@@ -133,6 +168,3 @@ struct HomePage: View {
         }
     }
 }
-//#Preview {
-//    HomePage(chatManager: .init(), authManager: .init())
-//}

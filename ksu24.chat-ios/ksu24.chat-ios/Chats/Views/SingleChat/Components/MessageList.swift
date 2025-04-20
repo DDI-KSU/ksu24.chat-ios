@@ -13,6 +13,9 @@ struct MessageList: View {
     
     public var chat: Chat
     
+    @Binding var isReplying: Bool
+    @Binding var replyToMessage: Message?
+    
     var body: some View {
         Divider()
         
@@ -20,7 +23,12 @@ struct MessageList: View {
             Spacer()
             
             ForEach(messages.reversed()) { message in
-                MessageRow(message: message, currentUserID: currentUserID, chat: chat)
+                MessageRow(
+                    message:        message,
+                    currentUserID:  currentUserID,
+                    isReplying:     $isReplying,
+                    replyToMessage: $replyToMessage,
+                    chat:           chat)
                 }
             }
     }

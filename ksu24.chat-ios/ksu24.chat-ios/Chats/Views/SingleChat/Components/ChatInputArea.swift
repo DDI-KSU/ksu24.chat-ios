@@ -6,17 +6,19 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 // TODO: Keyboard focus on replying
 // TODO: send messages (WebSockets are required)
 struct ChatInputArea: View {
     @State var text: String = ""
+    @Binding public var isReplying: Bool
+    @Binding public var replyToMessage: Message?
+    
+    @State private var photosPickerItems: [PhotosPickerItem] = []
     
     var body: some View {
         VStack {
-//            Divider()
-//                .offset(y: 18)
-            
             ZStack(alignment: .trailing) {
                 inputBar
                 
@@ -49,16 +51,27 @@ struct ChatInputArea: View {
     }
     
     private var sendButton: some View {
-        Button {
+        PhotosPicker("Send ", selection: $photosPickerItems, selectionBehavior: .ordered)
+    }
+    
+    private var replyView: some View {
+        HStack {
+            VStack {
+                Text(replyToMessage?.sender.fullName ?? "???")
+                Text(replyToMessage?.content ?? "???")
+            }
             
-        } label: {
-            Text("Send")
-                .foregroundStyle(text.isEmpty ? Color(.systemGray3) : .blue)
+            Button {
+                isReplying = false
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundColor(.gray)
+            }
         }
-        .disabled(text.isEmpty)
+        .border(Color.green)
     }
 }
 
-#Preview {
-    ChatInputArea()
-}
+//#Preview {
+//    ChatInputArea()
+//}

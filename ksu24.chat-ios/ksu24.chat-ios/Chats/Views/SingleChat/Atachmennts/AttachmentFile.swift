@@ -98,61 +98,26 @@ struct AttachmentFile: View {
     private func openFile(urlString: String) {
         guard let url = URL(string: urlString) else { return }
 
-                isDownloading = true
-
-                downloadFile(from: url) { result in
-                    DispatchQueue.main.async {
-                        self.isDownloading = false
-
-                        switch result {
-                        case .success(let localURL):
-                            self.localFileURL = localURL
-                            self.showQuickLook = true
-                        case .failure(let error):
-                            print("Download error: \(error)")
-                        }
+        if let cachedURL = CacheManager.shared.file(for: attachment.originalFilename) {
+            self.localFileURL = cachedURL
+            self.showQuickLook = true
+        } else {
+            // Start re-downloading if the file is missing
+            isDownloading = true
+            CacheManager.shared.downloadAndCacheFile(from: url, forKey: attachment.originalFilename) { result in
+                DispatchQueue.main.async {
+                    isDownloading = false
+                    switch result {
+                    case .success(let cachedURL):
+                        self.localFileURL = cachedURL
+                        self.showQuickLook = true
+                    case .failure(let error):
+                        print("Download failed: \(error.localizedDescription)")
                     }
                 }
+            }
+        }
     }
-    
-    func downloadFile(from url: URL, completion: @escaping (Result<URL, Error>) -> Void) {
-           let task = URLSession.shared.downloadTask(with: url) { tempLocalUrl, response, error in
-               if let error = error {
-                   completion(.failure(error))
-                   return
-               }
-
-               guard let tempLocalUrl = tempLocalUrl else {
-                   completion(.failure(NSError(domain: "DownloadError", code: -1, userInfo: nil)))
-                   return
-               }
-
-               let fileManager = FileManager.default
-               let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-
-               let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
-               
-               print(destinationURL)
-
-               do {
-                   if fileManager.fileExists(atPath: destinationURL.path) {
-                       try fileManager.removeItem(at: destinationURL)
-                   }
-                   try fileManager.copyItem(at: tempLocalUrl, to: destinationURL)
-                   completion(.success(destinationURL))
-               } catch {
-                   completion(.failure(error))
-               }
-           }
-
-        _ = task.progress.observe(\.fractionCompleted) { progress, _ in
-               DispatchQueue.main.async {
-                   self.downloadProgress = progress.fractionCompleted
-               }
-           }
-
-           task.resume()
-       }
 }
 //#Preview {
 //    AttachmentFile()

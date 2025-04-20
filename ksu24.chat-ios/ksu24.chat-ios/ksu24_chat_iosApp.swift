@@ -18,6 +18,7 @@ struct ksu24_chat_iosApp: App {
         WindowGroup {
             RootView(authManager: authManager,chatManager: chatManager, profileManager: profileManager, surveyManager: surveyManager)
                 .environment(\.profileID, profileManager.profile.id)
+                .environment(\.isBottomTabBarHidden, false)
         }
     }
 }

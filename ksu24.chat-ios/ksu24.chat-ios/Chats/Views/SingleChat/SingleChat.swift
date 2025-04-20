@@ -12,26 +12,31 @@ struct SingleChat: View {
     @ObservedObject public var chatManager: ChatManager
     @ObservedObject public var surveyManager: SurveyManager
     
+    @Environment(\.isBottomTabBarHidden) var isBottomTabBarHidden
     @State public var chat: Chat
     @State public var currentUserID: UUID
     
     @State var isSurveysPresented = false
     
     @State public var text: String = ""
+    
+    @State public var isReplying: Bool = false
+    @State private var replyToMessage: Message? = nil
 
     var body: some View {
         VStack(spacing: 0) {
 //            Spacer()
             
-            MessageList(messages: chatManager.messages, currentUserID: currentUserID, chat: chat)
+            MessageList(messages: chatManager.messages, currentUserID: currentUserID, chat: chat, isReplying: $isReplying, replyToMessage: $replyToMessage)
 //                .offset(y: 20)
                
-            ChatInputArea(text: text)
+            ChatInputArea(text: text, isReplying: $isReplying, replyToMessage: $replyToMessage)
            
         }
         .popup(isPresented: $isSurveysPresented) {
             SurveyView(surveyManager: surveyManager, chatID: chat.id)
         }
+        .toolbar(isBottomTabBarHidden ? .hidden : .visible, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 ChatHeader(chat: chat, chatManager: chatManager, surveyManager: surveyManager ,isSurveysPresented: $isSurveysPresented)

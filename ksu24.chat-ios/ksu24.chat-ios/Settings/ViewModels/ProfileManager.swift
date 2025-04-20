@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 class ProfileManager: ObservableObject {
-    @Published public var profile: Profile = Profile(id: UUID.init(), name: "", surname: "")
+    @Published public var profile: Profile = Profile(id: UUID.init(), name: "", surname: "", email: "")
     
     private var NRL:            NetworkResponseLoader
     private var cancellables = Set<AnyCancellable>()

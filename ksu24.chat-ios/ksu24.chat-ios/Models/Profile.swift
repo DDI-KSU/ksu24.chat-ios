@@ -13,6 +13,7 @@ public struct Profile: Codable {
     public var name:    String
     public var surname: String
     public var image:   String?
+    public var email:   String
 }
 
 extension Profile: CustomStringConvertible {

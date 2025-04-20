@@ -51,7 +51,7 @@ struct SurveyView: View {
     
     private var backgroundBlur: some View {
         RoundedRectangle(cornerRadius: 0)
-            .fill(Color.white.opacity(0.1))
+            .fill(Color.gray.opacity(0.1))
             .ignoresSafeArea()
             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             .background(.ultraThinMaterial)
@@ -85,6 +85,12 @@ struct SurveyView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Button {
+                        questions  = [Question()]
+                        startDate       = Date()
+                        endDate       = Date().addingTimeInterval(60 * 60 * 24)
+                        isAnonymous       = false
+                        title     = ""
+                        
                         withAnimation(.linear(duration: 0.5)) {
                             showBack = false
                         }
@@ -102,7 +108,10 @@ struct SurveyView: View {
                         
                         surveyManager.createSurvey(withID: chatID, body: survey)
                         
-                        showBack = false
+                        withAnimation(.linear(duration: 0.5)) {
+                            showBack = false
+                        }
+                        
                     } label: {
                         Text("Submit")
                             .foregroundStyle(.blue)
@@ -181,7 +190,7 @@ struct SurveyView: View {
     
     private var base: some View {
       RoundedRectangle(cornerRadius: 18)
-            .fill(Color(.systemGray5))
+            .fill(Color(.systemGray6))
             .frame(
                 width: UIScreen.main.bounds.width * 0.9,
                 height: UIScreen.main.bounds.height * 0.6

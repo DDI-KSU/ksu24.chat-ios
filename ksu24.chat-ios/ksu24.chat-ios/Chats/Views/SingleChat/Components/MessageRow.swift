@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 // TODO: Replying gesture
 // TODO: Show message views / list of reactions
@@ -16,6 +17,10 @@ import SwiftUI
 struct MessageRow: View {
     var message: Message
     var currentUserID: UUID
+    
+    @State private var selectedEmoji: String = ""
+    @Binding public var isReplying: Bool
+    @Binding public var replyToMessage: Message?
     
     var chat: Chat
     
@@ -90,13 +95,33 @@ struct MessageRow: View {
             }
             .background(isFromCurrentUser ? Color.blue : Color(.systemGray5))
             .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+            .contextMenu {
+                emojiPicker
+                
+                Divider()
+                
+                contextMenuButton(name: "Copy", image: "arrowshape.turn.up.left") {
+                    UIPasteboard
+                        .general.setValue(
+                            message.content,
+                            forPasteboardType: UTType.plainText.identifier
+                        )
+                }
+                
+                contextMenuButton(name: "Reply", image: "document.on.document") {
+                    isReplying = true
+                    replyToMessage = message
+                }
+            }
             .frame(maxWidth: UIScreen.main.bounds.width / 1.75, alignment: isFromCurrentUser ? .trailing : .leading)
+            
             
             if !isFromCurrentUser {
                 Spacer()
             }
                     
         }
+        
         .padding(.horizontal, 5)
         
         Spacer()
@@ -108,6 +133,18 @@ struct MessageRow: View {
             .background(isFromCurrentUser ? Color(.blue) : Color(.systemGray5))
             .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
             .frame(maxWidth: UIScreen.main.bounds.width / 1.5, alignment: .trailing)
+    }
+    
+    @ViewBuilder
+    private var emojiPicker: some View {
+        Picker("Put a reaction", selection: $selectedEmoji) {
+            ForEach(["👍", "👎", "😄", "🎉", "😕", "❤️", "🚀"], id: \.self) { emoji in
+                Text(emoji)
+                    .font(.largeTitle)
+                    .padding(5)
+            }
+        }
+        .pickerStyle(.palette)
     }
     
     @ViewBuilder
@@ -177,6 +214,17 @@ struct MessageRow: View {
                 }
             }
         }
+    }
+    
+    private func contextMenuButton(name: String, image: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Text(name)
+                Spacer()
+                Image(systemName: image)
+            }
+        }
+      
     }
 }
 
