@@ -9,17 +9,26 @@ import SwiftUI
 import Combine
 
 class ProfileManager: ObservableObject {
-    @Published public var profile: Profile = Profile(id: UUID.init(), name: "", surname: "", email: "")
+    @Published public var profile: Profile = Profile(
+                                                     id:         UUID.init(), 
+                                                     name:       "", 
+                                                     surname:    "", 
+                                                     email:      ""
+                                                    )
     
     private var NRL:            NetworkResponseLoader
-    private var cancellables = Set<AnyCancellable>()
+    private var cancellables =  Set<AnyCancellable>()
     
     init() {
         self.NRL = .init()
     }
     
     public func loadProfile() {
-        NRL.loadSingle(modelType: Profile.self, endpoint: .profile, method: "GET")
+        NRL.loadSingle(
+                        modelType:   Profile.self, 
+                        endpoint:   .profile, 
+                        method:     "GET"
+        )
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
