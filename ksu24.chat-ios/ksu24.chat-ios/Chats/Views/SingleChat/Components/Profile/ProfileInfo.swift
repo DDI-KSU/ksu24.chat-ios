@@ -13,7 +13,10 @@ struct ProfileInfo: View {
     var body: some View {
         VStack {
             avatar(from: profileManager.profile.image)
-            initials(name: profileManager.profile.name, surname: profileManager.profile.surname)
+            initials(
+                     name:     profileManager.profile.name, 
+                     surname:  profileManager.profile.surname
+            )
                 .padding(.bottom, 0.5)
             userEmail(profileManager.profile.email)
         }
